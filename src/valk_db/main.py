@@ -49,7 +49,8 @@ class Database():
             command += f",\n{row['name']} {row['type']}"
         
         command += ")"
-        self.cursor.commit(command)
+        self.cursor.execute(command)
+        self.conn.commit()
         
     def execute(self, command: str, params: tuple = ()) -> bool | str:
         """Execute a SQL Command on the Database.
