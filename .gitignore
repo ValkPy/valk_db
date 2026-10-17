@@ -13,6 +13,8 @@ dist/
 *.egg-info/
 .eggs/
 
+pyproject.toml
+
 .pytest_cache/
 .tox/
 .nox/
