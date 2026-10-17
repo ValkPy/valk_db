@@ -5,9 +5,7 @@ class Database():
     
     # Args:
     - name (str): The name of the DB (without .db at the end)
-    
-    - rows (list): A list of dict, just like that : [{"name": "email", "type": "int NOT NULL"}]
-    
+        
     - path (str) (optionnal): The Path where the Database will me created, leave blank will create it in the same folder as your current file
     
     # Raises:
@@ -16,20 +14,38 @@ class Database():
     - ValueError: This error is raised when you put a wrong variable
 
     """
-    def __init__(self, name: str, rows: list, path: str = ""):
+    def __init__(self, name: str, path: str = ""):
         
         if not isinstance(name, str): raise TypeError("The name of the Database need to be a string.")
-        if not isinstance(rows, list): raise TypeError("Rows of the Database need to be a list.")
         if not isinstance(path, str): raise TypeError("The path of the Database need to be a string.")
         
         self.name = name if ".db" in name else name + ".db"
-        self.rows = rows
         self.path = self.name if not path else path + f"/{self.name}"
         
         self.conn = sqlite3.connect(self.path)
         self.cursor = self.conn.cursor()
         
-        command = f"""CREATE TABLE IF NOT EXISTS {name.replace(".db", "")} (
+    def create_table(self, name: str, rows: str) -> bool:
+        """Create a table. In all table, an 'id' column will be create.
+        
+        # Args:
+        - name (str): The name of the table
+        
+        - rows (list): A list of dict, just like that : [{"name": "email", "type": "int NOT NULL"}]
+        
+        # Return:
+        - bool: Return if the colomn has been created successfully or raise an error if not
+                
+        # Raises:
+        - TypeError: This error is raised when you give an incorrect variable
+        
+        - ValueError: This error is raised when you put a wrong variable
+
+        """
+        if not isinstance(name, str): raise TypeError("The name of the table need to be a string.")
+        if not isinstance(rows, list): raise TypeError("Rows of the table need to be a list.")
+        
+        command = f"""CREATE TABLE IF NOT EXISTS {name} (
             id INTEGER PRIMARY KEY AUTOINCREMENT
         """
         
@@ -39,6 +55,8 @@ class Database():
             
             if not isinstance(row["name"], str): raise TypeError(f"The name of the column need to be a string.\nRow: {row}")
             if not isinstance(row["type"], str): raise TypeError(f"The type of the column need to be a string.\nRow: {row}")
+            
+            if row["name"].lower() == "id": raise ValueError(f"The ID parameter is already created by the library, remove it from your line:\n{row}")
             
             if not re.match(r"^[a-zA-Z0-9_]+$", row["name"]):
                 raise ValueError(
@@ -51,6 +69,7 @@ class Database():
         command += ")"
         self.cursor.execute(command)
         self.conn.commit()
+        return True
         
     def execute(self, command: str, params: tuple = ()) -> bool | str:
         """Execute a SQL Command on the Database.
