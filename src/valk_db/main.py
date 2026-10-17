@@ -50,3 +50,20 @@ class Database():
         
         command += ")"
         self.cursor.commit(command)
+        
+    def execute(self, command: str, params: tuple = ()) -> bool | str:
+        """Execute a SQL Command on the Database.
+        
+        # Args:
+        - command (str): The SQL Command to run
+        
+        - params (tuple) (optionnal): The parameters to add when the command is run
+        
+        # Returns:
+        - bool: Return if the command has been run successfully or not
+        
+        - str: If the command didn't run correctly, return the error
+        """
+        
+        
+        
