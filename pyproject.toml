@@ -14,5 +14,5 @@ authors = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://valk-solutions/projects/valk_db"
+Homepage = "https://valk-solutions.fr/projects/valk_db"
 Repository = "https://github.com/ValkPy/valk_db"

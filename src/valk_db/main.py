@@ -65,5 +65,32 @@ class Database():
         - str: If the command didn't run correctly, return the error
         """
         
+        try:
+            self.cursor.execute(command, params)
+            self.conn.commit()
+            return True
+            
+        except Exception as e:
+            return False, e
+          
+    def fetchall(self, command: str, params: tuple = ()) -> list:
+        """Fetch all results on a Dataabse after an SQL command.
         
+        # Args:
+        - command (str): The SQL Command to run
         
+        - params (tuple) (optionnal): The parameters to add when the command is run
+        
+        # Returns:
+        - list: Return the results like that: [{}]
+        """
+        
+        try:
+            self.cursor.execute(command, params)
+            self.conn.commit()
+            return [dict(row) for row in self.cursor.fetchall()]
+            
+        except Exception as e:
+            raise Exception(f"There are an error while fetching results: {e}")
+        
+    
