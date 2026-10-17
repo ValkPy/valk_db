@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "valk_db"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "ValkPy", email = "valk.py.dev@gmail.com" }
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://valk-solutions/projects/valk_db"
+Repository = "https://github.com/ValkPy/valk_db"
